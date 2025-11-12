@@ -1,4 +1,4 @@
-window.AFROBEATS_DATA = {
+{
   "playlists": [
     {
       "id": "afrobeats-hits",
@@ -8572,4 +8572,4 @@ window.AFROBEATS_DATA = {
     ],
     "skippedPlaylists": {}
   }
-};
+}

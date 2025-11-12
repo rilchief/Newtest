@@ -21,7 +21,8 @@
     emptyState: document.getElementById("empty-state"),
     regionChart: document.getElementById("region-chart"),
     audioChart: document.getElementById("audio-chart"),
-    curatorChart: document.getElementById("curator-chart")
+    curatorChart: document.getElementById("curator-chart"),
+    audioBanner: document.getElementById("audio-status-banner")
   };
 
   const allTracks = dataset.playlists.flatMap((playlist) => playlist.tracks || []);
@@ -30,6 +31,14 @@
   const maxYearValue = Math.max(...trackYears);
 
   const uniqueCuratorTypes = Array.from(new Set(dataset.playlists.map((p) => p.curatorType))).sort();
+
+  const metadataElements = {
+    generated: document.getElementById("data-generated"),
+    started: document.getElementById("data-started"),
+    playlistTotal: document.getElementById("dataset-playlist-count"),
+    missingCount: document.getElementById("dataset-missing-count"),
+    audioStatus: document.getElementById("audio-feature-status")
+  };
 
   const state = {
     search: "",
@@ -168,11 +177,64 @@
     return `${Math.round((part / total) * 100)}%`;
   }
 
+  function formatTimestamp(value) {
+    if (!value) return "Unknown";
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) {
+      return value;
+    }
+    return date.toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" });
+  }
+
   let charts = {
     region: null,
     audio: null,
     curator: null
   };
+
+  function initMetadata() {
+    const runMetadata = dataset.runMetadata || {};
+    if (metadataElements.generated) {
+      metadataElements.generated.textContent = formatTimestamp(runMetadata.generatedAt);
+    }
+    if (metadataElements.started) {
+      metadataElements.started.textContent = formatTimestamp(runMetadata.startedAt);
+    }
+    if (metadataElements.playlistTotal) {
+      const runCount = typeof runMetadata.playlistCount === "number" ? runMetadata.playlistCount : dataset.playlists.length;
+      metadataElements.playlistTotal.textContent = String(runCount);
+    }
+    if (metadataElements.missingCount) {
+      const missing = Array.isArray(runMetadata.missingArtists) ? runMetadata.missingArtists.length : 0;
+      metadataElements.missingCount.textContent = String(missing);
+    }
+
+    const tracksWithAudio = allTracks.filter((track) => {
+      if (!track?.features) return false;
+      return Object.values(track.features).some((value) => typeof value === "number" && value > 0);
+    }).length;
+    const coverage = allTracks.length ? Math.round((tracksWithAudio / allTracks.length) * 100) : 0;
+
+    if (metadataElements.audioStatus) {
+      if (coverage === 0) {
+        metadataElements.audioStatus.textContent = "Audio features unavailable (API returned 403)";
+        metadataElements.audioStatus.classList.add("is-warning");
+        metadataElements.audioStatus.classList.remove("is-success");
+      } else {
+        metadataElements.audioStatus.textContent = `${coverage}% audio feature coverage`;
+        metadataElements.audioStatus.classList.add("is-success");
+        metadataElements.audioStatus.classList.remove("is-warning");
+      }
+    }
+
+    if (elements.audioBanner) {
+      if (coverage === 0) {
+        elements.audioBanner.hidden = false;
+      } else {
+        elements.audioBanner.hidden = true;
+      }
+    }
+  }
 
   function ensureCharts() {
     if (!charts.region) {
@@ -413,5 +475,6 @@
 
   initFilters();
   attachListeners();
+  initMetadata();
   updateDashboard();
 })();

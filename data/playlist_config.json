@@ -1,0 +1,49 @@
+{
+  "playlists": {
+    "afrobeats-hits": {
+      "id": "25Y75ozl2aI0NylFToefO5",
+      "curatorType": "Independent Curator",
+      "label": "Afrobeats Hits"
+    },
+    "afrobeats-2026": {
+      "id": "5myeBzohhCVewaK2Thqmo5",
+      "curatorType": "Independent Curator",
+      "label": "Afrobeats 2026"
+    },
+    "ginja": {
+      "id": "4XtoXt98uSrnUbMz7JtWZk",
+      "curatorType": "User-Generated",
+      "label": "Ginja"
+    },
+    "viral-afrobeats": {
+      "id": "6ebiO5veMmbIWL5aGvalgQ",
+      "curatorType": "Media Publisher",
+      "label": "Viral Afrobeats"
+    },
+    "top-afrobeats-hits": {
+      "id": "0RChPss4CYl5LTfK0CRgOZ",
+      "curatorType": "Media Publisher",
+      "label": "Top Afrobeats Hits"
+    },
+    "afrobeats-gold": {
+      "id": "1UFBYLsMwB2q0EypxWdBLO",
+      "curatorType": "Independent Curator",
+      "label": "Afrobeats Gold"
+    },
+    "amapiano-2025": {
+      "id": "4Ymf8eaPQGT7HMTymoX82f",
+      "curatorType": "Independent Curator",
+      "label": "Amapiano 2025"
+    },
+    "top-picks-afrobeats": {
+      "id": "1ynsIf7ZgpEFxIvuDBlUcK",
+      "curatorType": "Media Publisher",
+      "label": "Top Picks: Afrobeats"
+    },
+    "afrobeats-hits-indie": {
+      "id": "2DfNaw9Z1nuddjI6NczTXS",
+      "curatorType": "Independent Curator",
+      "label": "Afrobeats Hits (Indie)"
+    }
+  }
+}

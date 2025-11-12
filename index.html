@@ -10,15 +10,46 @@
   <link rel="stylesheet" href="data/scripts/style.css" />
 </head>
 <body>
+  <a href="#dashboard-main" class="skip-link">Skip to dashboard</a>
   <header>
     <h1>Afrobeats Playlist Gatekeeping Observatory</h1>
     <p>
       Explore how Spotify playlists shape the global identity of Afrobeats. Benchmark regional representation,
       curator influence, and sonic diversity across influential playlists to surface signals of gatekeeping and bias.
     </p>
+    <div class="hero-actions">
+      <a class="cta" href="data/scripts/data.js" download>Download current snapshot</a>
+      <a class="cta secondary" href="README.md">Project notes</a>
+      <a class="cta secondary" href="scripts/fetch_spotify_data.py">Regenerate data</a>
+    </div>
   </header>
 
-  <main>
+  <section class="panel status-strip page-block" aria-label="Dataset status">
+    <div class="status-metrics">
+      <div>
+        <span class="status-label">Generated</span>
+        <strong id="data-generated">--</strong>
+      </div>
+      <div>
+        <span class="status-label">Ingestion started</span>
+        <strong id="data-started">--</strong>
+      </div>
+      <div>
+        <span class="status-label">Playlists captured</span>
+        <strong id="dataset-playlist-count">--</strong>
+      </div>
+      <div>
+        <span class="status-label">Artists missing metadata</span>
+        <strong id="dataset-missing-count">--</strong>
+      </div>
+    </div>
+    <div class="status-note">
+      <span class="status-label">Audio features</span>
+      <span id="audio-feature-status" class="status-pill">Checking coverage…</span>
+    </div>
+  </section>
+
+  <main id="dashboard-main">
     <aside id="filters" class="panel" aria-label="Dashboard filters">
       <div class="filter-group">
         <h3>Search playlist</h3>
@@ -92,7 +123,13 @@
         <article class="chart-panel">
           <div>
             <h3>Audio profile</h3>
-            <p>Mean danceability, energy, valence, tempo, and acousticness for the filtered selection.</p>
+            <p>
+              Mean danceability, energy, valence, tempo, and acousticness for the filtered selection. Requires Spotify
+              audio feature access.
+            </p>
+          </div>
+          <div id="audio-status-banner" class="chart-banner" role="status" hidden>
+            Audio features are currently unavailable; radar values default to zero until coverage improves.
           </div>
           <canvas id="audio-chart" aria-label="Audio profile radar" role="img"></canvas>
         </article>
@@ -106,9 +143,9 @@
       </section>
 
       <section class="panel" aria-label="Playlist breakdown">
-        <div style="margin-bottom: 1rem;">
-          <h2 style="margin: 0 0 0.5rem 0;">Playlist breakdown</h2>
-          <p style="margin: 0; color: var(--muted); font-size: 0.9rem;">
+        <div class="panel-heading">
+          <h2>Playlist breakdown</h2>
+          <p>
             Compare reach, regional diversity, and diaspora visibility. Metrics reflect the current filter selection.
           </p>
         </div>
@@ -135,6 +172,16 @@
       </section>
     </section>
   </main>
+
+  <section class="panel methodology page-block" aria-label="How to interpret this dashboard">
+    <h2>How to use this observatory</h2>
+    <ul>
+      <li><strong>Filter the inputs</strong>: Narrow curators, year range, or diaspora focus to mirror specific research questions.</li>
+      <li><strong>Inspect imbalances</strong>: Scan the cards and charts for over-indexing by region or curator type.</li>
+      <li><strong>Validate metadata</strong>: Keep the artist CSV aligned with new playlists so regional insights remain trustworthy.</li>
+      <li><strong>Refresh frequently</strong>: Run <code>python scripts/fetch_spotify_data.py</code> after updating playlist IDs or artist metadata.</li>
+    </ul>
+  </section>
 
   <footer>
     Data synthesised from Spotify playlists for prototyping only. Replace <code>data.js</code> with live API output for
